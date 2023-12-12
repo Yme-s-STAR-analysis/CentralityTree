@@ -65,6 +65,15 @@ Int_t StCentTreeMaker::Init() {
 	stree->Branch("tofMult", &event.tofMult, "tofMult/I");
 
 	trg = new TriggerTool();
+	// Mean DCA tool needs to be set up here
+	// the parameters come from MakeMeanDcaCut
+	// here the examples are from 14.6 GeV
+	dcatool = new MeanDcaTool();
+	dcatool->SetUpperCurveParZ(-0.0531713, 1.71842, 0.465328);
+	dcatool->SetLowerCurveParZ(0.0532244, -1.72135, 0.464709);
+	dcatool->SetUpperCurveParXY(0.045491, 2.14648, 0.558145);
+	dcatool->SetLowerCurveParXY(-0.102939, -2.14641, 0.54303);
+
 	return kStOK;
 }
 
@@ -131,6 +140,18 @@ Int_t StCentTreeMaker::Make() {
 	event.Vz = vz;
 	event.ZDCx = mPicoEvent->ZDCx();
 	event.TriggerId = trgid;
+
+	// do mean dca cut
+	if (!dcatool->Make(mPicoDst)) {
+		return kStOK;
+	}
+
+	if (dcatool->IsBadMeanDcaZEvent(mPicoDst)) {
+		return kStOK;
+	}
+	if (dcatool->IsBadMeanDcaXYEvent(mPicoDst)) {
+		return kStOK;
+	}
 
 	// get multiplicities
 	cnter->make(mPicoDst);

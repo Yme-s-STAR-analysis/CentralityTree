@@ -9,6 +9,7 @@
 #include "StRoot/StCFMult/StCFMult.h"
 #include "StRoot/TpcShiftTool/TpcShiftTool.h"
 #include "StRoot/TriggerTool/TriggerTool.h"
+#include "StRoot/MeanDcaTool/MeanDcaTool.h"
 
 class StPicoDst;
 class StPicoEvent;
@@ -21,6 +22,7 @@ class TProfile;
 class TTree;
 class TH2D;
 class TriggerTool;
+class MeanDcaTool;
 #include "TVector3.h"
 
 class StCentTreeMaker : public StMaker
@@ -44,6 +46,7 @@ private:
 	TpcShiftTool* shift;
 	StCFMult* cnter;
 	TriggerTool* trg;
+	MeanDcaTool* dcatool;
 
 	TString mOutputName;
 	TFile *mFileOut;
