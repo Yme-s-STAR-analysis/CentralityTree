@@ -1,6 +1,6 @@
 # Centrality Tree Generation
 
-* version: 2.1
+* version: 2.2
 
 * author: yghuang
 
@@ -9,6 +9,10 @@
 To generate reduced tree for centrality definition.
 
 ## Change Log
+
+14.02.2024 by yghuang (v2.2):
+
+> Fix a bug: readPicoDst.C did not contain MeanDcaTool.
 
 12.12.2023 by yghuang (v2.1):
 
