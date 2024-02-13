@@ -18,6 +18,7 @@ void readPicoDst(const Char_t *inputFile = "file.list", TString JobIdName ="Cent
     gSystem->Load("StPicoDstMaker");
     gSystem->Load("StCentTreeMaker");
     gSystem->Load("TpcShiftTool");
+    gSystem->Load("MeanDcaTool");
     gSystem->Load("StCFMult");
     gSystem->Load("TriggerTool");
     
