@@ -27,10 +27,6 @@ void readPicoDst(const Char_t *inputFile = "file.list", TString JobIdName ="Cent
     TString Name = JobIdName ;  Name.Append(".root") ;
     StPicoDstMaker *picoMaker = new StPicoDstMaker(2, inputFile, "picoDst");
     StCentTreeMaker *anaMaker = new StCentTreeMaker("ana",picoMaker, Name);
-    anaMaker->SetShiftTool(
-        "/star/u/yghuang/Work/DataAnalysis/BES2/19p6/yqa/7ShiftFile/U.shift.root", 
-        "ProtonShift1D", "ProtonShift2D"
-    );
 
     chain->Init();
     cout << "chain->Init();" << endl;
