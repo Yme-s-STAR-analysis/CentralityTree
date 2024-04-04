@@ -1,14 +1,18 @@
 # Centrality Tree Generation
 
-* version: 2.2
+`version: 3.0`
 
-* author: yghuang
+`author: yghuang`
 
 ## Introduction
 
 To generate reduced tree for centrality definition.
 
 ## Change Log
+
+04.04.2024 by yghuang (v3.0):
+
+> Using Ashish's definition of multiplicities, and latest modules
 
 14.02.2024 by yghuang (v2.2):
 
