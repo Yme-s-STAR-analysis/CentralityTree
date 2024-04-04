@@ -35,7 +35,6 @@ public:
 	virtual Int_t Make();
 	virtual void Clear(Option_t *opt = "");
 	virtual Int_t Finish();
-	void SetShiftTool(const char*, const char*, const char*);
 
 private:
 	StPicoDstMaker *mPicoDstMaker;

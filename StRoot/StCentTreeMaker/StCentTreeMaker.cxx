@@ -132,12 +132,12 @@ Int_t StCentTreeMaker::Make() {
 	// get multiplicities
 	mtMult->make(mPicoDst);
 
-	event.refMult = cnter->mRefMult;
-	event.refMult3 = cnter->mRefMult3;
-	event.refMult3X = cnter->mRefMult3X;
-	event.nTofMatch = cnter->mNTofMatch;
-	event.nTofBeta = cnter->mNTofBeta;
-	event.tofMult = cnter->mTofMult;
+	event.refMult = mtMult->mRefMult;
+	event.refMult3 = mtMult->mRefMult3;
+	event.refMult3X = mtMult->mRefMult3X;
+	event.nTofMatch = mtMult->mNTofMatch;
+	event.nTofBeta = mtMult->mNTofBeta;
+	event.tofMult = mtMult->mTofMult;
 
 	stree->Fill();
 
