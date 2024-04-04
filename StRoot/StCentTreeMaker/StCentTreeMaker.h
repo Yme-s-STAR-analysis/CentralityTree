@@ -43,10 +43,10 @@ private:
 	StPicoEvent *mPicoEvent;
 	StPicoTrack *picoTrack;
 
-	TpcShiftTool* shift;
-	StCFMult* cnter;
-	TriggerTool* trg;
-	MeanDcaTool* dcatool;
+	TpcShiftTool* mtShift;
+	StCFMult* mtMult;
+	TriggerTool* mtTrg;
+	MeanDcaTool* mtDca;
 
 	TString mOutputName;
 	TFile *mFileOut;

@@ -34,7 +34,6 @@ struct Event {
 	Int_t refMult3;
 	Int_t refMult3X;
 	Int_t nTofMatch;
-	Int_t nTofMatchZ;
 	Int_t nTofBeta;
 	Int_t tofMult;
 };
@@ -60,29 +59,21 @@ Int_t StCentTreeMaker::Init() {
 	stree->Branch("refMult3", &event.refMult3, "refMult3/I");
 	stree->Branch("refMult3X", &event.refMult3X, "refMult3X/I");
 	stree->Branch("nTofMatch", &event.nTofMatch, "nTofMatch/I");
-	stree->Branch("nTofMatchZ", &event.nTofMatchZ, "nTofMatchZ/I");
 	stree->Branch("nTofBeta", &event.nTofBeta, "nTofBeta/I");
 	stree->Branch("tofMult", &event.tofMult, "tofMult/I");
 
-	trg = new TriggerTool();
-	// Mean DCA tool needs to be set up here
-	// the parameters come from MakeMeanDcaCut
-	// here the examples are from 14.6 GeV
-	dcatool = new MeanDcaTool();
-	dcatool->SetUpperCurveParZ(-0.0531713, 1.71842, 0.465328);
-	dcatool->SetLowerCurveParZ(0.0532244, -1.72135, 0.464709);
-	dcatool->SetUpperCurveParXY(0.045491, 2.14648, 0.558145);
-	dcatool->SetLowerCurveParXY(-0.102939, -2.14641, 0.54303);
+	mtTrg = new TriggerTool();
+
+	mtDca = new MeanDcaTool();
+	mtDca->ReadParams();
+
+	mtShift = new TpcShiftTool();
+	mtShift->Init();
+
+	mtMult = new StCFMult();
+	mtMult->ImportShiftTool(mtShift);
 
 	return kStOK;
-}
-
-// ==== init shift util
-void StCentTreeMaker::SetShiftTool(const char* fname, const char* h1name, const char* h2name) {
-	shift = new TpcShiftTool();
-	shift->Init(fname, h1name, h2name);
-	cnter = new StCFMult();
-	cnter->ImportShiftTool(shift);
 }
 
 //---------------------------------------------------------
@@ -115,52 +106,36 @@ Int_t StCentTreeMaker::Make() {
 		return kStOk;
 	}
 
-
 	TVector3 pVtx = mPicoEvent->primaryVertex();
 	Double_t vx = pVtx.X();
 	Double_t vy = pVtx.Y();
 	Double_t vz = pVtx.Z();
 
-	if (TMath::Abs(vx) < 1.e-5 && TMath::Abs(vy) < 1.e-5 && TMath::Abs(vz) < 1.e-5) {
-		return kStOk;
-	}
-	if (sqrt(vx * vx + vy * vy) >= 2.0) {
-		return kStOk;
-	}
-	if (fabs(vz) > 70.) {
-		return kStOk;
-	}
+	if (TMath::Abs(vx) < 1.e-5 && TMath::Abs(vy) < 1.e-5 && TMath::Abs(vz) < 1.e-5) { return kStOk; }
+	if (sqrt(vx * vx + vy * vy) >= 2.0) { return kStOk; }
+	if (fabs(vz) > 70.) { return kStOk; }
 
 	// others
-	auto trgid = trg->GetTriggerID(mPicoEvent);
-	if (trgid < 0) {
-		return kStOK;
-	}
+	auto trgid = mtTrg->GetTriggerID(mPicoEvent);
+	if (trgid < 0) { return kStOK; }
 	event.RunId = mPicoEvent->runId();
 	event.Vz = vz;
 	event.ZDCx = mPicoEvent->ZDCx();
 	event.TriggerId = trgid;
 
 	// do mean dca cut
-	if (!dcatool->Make(mPicoDst)) {
-		return kStOK;
-	}
+	if (!mtDca->Make(mPicoDst)) { return kStOK; }
 
-	if (dcatool->IsBadMeanDcaZEvent(mPicoDst)) {
-		return kStOK;
-	}
-	if (dcatool->IsBadMeanDcaXYEvent(mPicoDst)) {
-		return kStOK;
-	}
+	if (mtDca->IsBadMeanDcaZEvent(mPicoDst)) { return kStOK; }
+	if (mtDca->IsBadMeanDcaXYEvent(mPicoDst)) { return kStOK; }
 
 	// get multiplicities
-	cnter->make(mPicoDst);
+	mtMult->make(mPicoDst);
 
 	event.refMult = cnter->mRefMult;
 	event.refMult3 = cnter->mRefMult3;
 	event.refMult3X = cnter->mRefMult3X;
 	event.nTofMatch = cnter->mNTofMatch;
-	event.nTofMatchZ = cnter->mNTofMatchZ;
 	event.nTofBeta = cnter->mNTofBeta;
 	event.tofMult = cnter->mTofMult;
 
