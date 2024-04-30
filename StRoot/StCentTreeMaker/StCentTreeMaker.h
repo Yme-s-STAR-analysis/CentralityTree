@@ -3,6 +3,7 @@
 #include "StMaker.h"
 #include "StThreeVectorF.hh"
 #include "TString.h"
+#include "TVector3.h"
 #include "StarClassLibrary/StThreeVectorF.hh"
 #include "StarClassLibrary/StThreeVectorD.hh"
 
@@ -10,6 +11,7 @@
 #include "StRoot/TpcShiftTool/TpcShiftTool.h"
 #include "StRoot/TriggerTool/TriggerTool.h"
 #include "StRoot/MeanDcaTool/MeanDcaTool.h"
+#include "StRoot/VtxShiftTool/VtxShiftTool.h"
 
 class StPicoDst;
 class StPicoEvent;
@@ -21,9 +23,7 @@ class TH3F;
 class TProfile;
 class TTree;
 class TH2D;
-class TriggerTool;
-class MeanDcaTool;
-#include "TVector3.h"
+
 
 class StCentTreeMaker : public StMaker
 {
@@ -46,6 +46,7 @@ private:
 	StCFMult* mtMult;
 	TriggerTool* mtTrg;
 	MeanDcaTool* mtDca;
+	VtxShiftTool* mtVtx;
 
 	TString mOutputName;
 	TFile *mFileOut;

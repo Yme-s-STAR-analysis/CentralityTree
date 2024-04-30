@@ -33,6 +33,8 @@ struct Event {
 	Int_t refMult;
 	Int_t refMult3;
 	Int_t refMult3X;
+	Int_t refMult3S;
+	Int_t refMult3E;
 	Int_t nTofMatch;
 	Int_t nTofBeta;
 	Int_t tofMult;
@@ -58,6 +60,8 @@ Int_t StCentTreeMaker::Init() {
 	stree->Branch("refMult", &event.refMult, "refMult/I");
 	stree->Branch("refMult3", &event.refMult3, "refMult3/I");
 	stree->Branch("refMult3X", &event.refMult3X, "refMult3X/I");
+	stree->Branch("refMult3S", &event.refMult3S, "refMult3S/I");
+	stree->Branch("refMult3E", &event.refMult3E, "refMult3E/I");
 	stree->Branch("nTofMatch", &event.nTofMatch, "nTofMatch/I");
 	stree->Branch("nTofBeta", &event.nTofBeta, "nTofBeta/I");
 	stree->Branch("tofMult", &event.tofMult, "tofMult/I");
@@ -72,6 +76,11 @@ Int_t StCentTreeMaker::Init() {
 
 	mtMult = new StCFMult();
 	mtMult->ImportShiftTool(mtShift);
+	// in centrality tree, RefMult3E just uses 1.0
+	// we can scan it later and find the proper efficiency value
+	mtMult->SetEfficiencyRefMult3E(1.0); 
+
+	mtVtx = new mtVtx();
 
 	return kStOK;
 }
@@ -111,9 +120,15 @@ Int_t StCentTreeMaker::Make() {
 	Double_t vy = pVtx.Y();
 	Double_t vz = pVtx.Z();
 
-	if (TMath::Abs(vx) < 1.e-5 && TMath::Abs(vy) < 1.e-5 && TMath::Abs(vz) < 1.e-5) { return kStOk; }
-	if (sqrt(vx * vx + vy * vy) >= 2.0) { return kStOk; }
-	if (fabs(vz) > 70.) { return kStOk; }
+	if (fabs(vx) < 1.e-5 && 
+		fabs(vy) < 1.e-5 &&
+		fabs(vz) < 1.e-5) {
+		return kStOK;
+	}
+
+	if (fabs(vz) > 50) { return kStOK; }
+	auto vr = mtVtx->GetShiftedVr(vx, vy);
+	if (vr > 1) { return kStOK; }
 
 	// others
 	auto trgid = mtTrg->GetTriggerID(mPicoEvent);
@@ -135,6 +150,8 @@ Int_t StCentTreeMaker::Make() {
 	event.refMult = mtMult->mRefMult;
 	event.refMult3 = mtMult->mRefMult3;
 	event.refMult3X = mtMult->mRefMult3X;
+	event.refMult3S = mtMult->mRefMult3S;
+	event.refMult3E = mtMult->mRefMult3E;
 	event.nTofMatch = mtMult->mNTofMatch;
 	event.nTofBeta = mtMult->mNTofBeta;
 	event.tofMult = mtMult->mTofMult;

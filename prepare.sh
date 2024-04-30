@@ -14,15 +14,15 @@ else
     mkdir -p $1/log
     mkdir -p $1/out
 
-    rm -r  $1/report/* 
-    rm -r  $1/csh/* 
-    rm -r  $1/err/* 
-    rm -r  $1/list/* 
-    rm -r  $1/log/* 
-    rm -r  $1/out/*
+    rm -rf  $1/report/* 
+    rm -rf  $1/csh/* 
+    rm -rf  $1/err/* 
+    rm -rf  $1/list/* 
+    rm -rf  $1/log/* 
+    rm -rf  $1/out/*
     
-    rm -r  libZip*.zip
-    rm -r  libZip*.package
-    rm -r  *dataset
-    rm -r  *session.xml
+    rm -rf  libZip*.zip
+    rm -rf  libZip*.package
+    rm -rf  *dataset
+    rm -rf  *session.xml
 fi

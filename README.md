@@ -1,6 +1,6 @@
 # Centrality Tree Generation
 
-`version: 3.0`
+`version: 4.0`
 
 `author: yghuang`
 
@@ -9,6 +9,12 @@
 To generate reduced tree for centrality definition.
 
 ## Change Log
+
+01.05.2024 by yghuang (v4.0):
+
+> Updated sub-modules with git submodule
+>
+> And RefMult3S/E are also included
 
 04.04.2024 by yghuang (v3.0):
 

@@ -23,7 +23,7 @@
     <ListLocation>TARGET/list/</ListLocation>
   </Generator>
 
-  <input URL="filelist:/star/u/yghuang/Work/DataAnalysis/BES2/19p6/yqa/0GetList/ZDC-U.file.list"/>
+  <input URL="filelist:/star/u/yghuang/Work/DataAnalysis/BES2/OverAll/0Lists/19/good.file.list"/>
   <output fromScratch="*.root" toURL="file:TARGET/out/" />
   <output fromScratch="*.log" toURL="file:TARGET/log/" />
 
