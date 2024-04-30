@@ -80,7 +80,7 @@ Int_t StCentTreeMaker::Init() {
 	// we can scan it later and find the proper efficiency value
 	mtMult->SetEfficiencyRefMult3E(1.0); 
 
-	mtVtx = new mtVtx();
+	mtVtx = new VtxShiftTool();
 
 	return kStOK;
 }
