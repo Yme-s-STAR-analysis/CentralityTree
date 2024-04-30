@@ -16,6 +16,10 @@ To generate reduced tree for centrality definition.
 >
 > And RefMult3S/E are also included
 
+(v4.1):
+
+> Fix a bug
+
 04.04.2024 by yghuang (v3.0):
 
 > Using Ashish's definition of multiplicities, and latest modules
